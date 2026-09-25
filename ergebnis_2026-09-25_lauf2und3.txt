@@ -1,0 +1,50 @@
+===== traegheit voxel 5 =====
+# Befund 1: Traegheit, Kugel R = 50 mm, Voxel = 5 mm, Dichte = 1000 kg/m3
+Soll (2/5 m R^2):                5.235988E+02 kg mm2
+Measure.matGetMomentOfInertia:   Ixx 6.556684E+02  Iyy 6.553743E+02  Izz 6.546798E+02   Abw. +25.22 % / +25.17 % / +25.03 %
+Rasterpunkte innen (fSD<=0): 4161, davon mit gespeichertem Wert (bGetValue==true): 2750  (66.1 %)
+Raster ohne Rueckgabewert-Filter: Ixx 5.189420E+02  Iyy 5.189434E+02  Izz 5.176900E+02   Abw. -0.89 % / -0.89 % / -1.13 %
+Volumen PicoGK: 5.203670E+05 mm3, Soll 5.235988E+05 mm3, Abw. -0.62 %
+RC=0
+===== traegheit voxel 2 =====
+# Befund 1: Traegheit, Kugel R = 50 mm, Voxel = 2 mm, Dichte = 1000 kg/m3
+Soll (2/5 m R^2):                5.235988E+02 kg mm2
+Measure.matGetMomentOfInertia:   Ixx 7.536065E+02  Iyy 7.538410E+02  Izz 7.660792E+02   Abw. +43.93 % / +43.97 % / +46.31 %
+Rasterpunkte innen (fSD<=0): 63238, davon mit gespeichertem Wert (bGetValue==true): 20299  (32.1 %)
+Raster ohne Rueckgabewert-Filter: Ixx 4.918998E+02  Iyy 4.919193E+02  Izz 5.015834E+02   Abw. -6.05 % / -6.05 % / -4.20 %
+Volumen PicoGK: 5.230342E+05 mm3, Soll 5.235988E+05 mm3, Abw. -0.11 %
+RC=0
+===== traegheit voxel 1 =====
+# Befund 1: Traegheit, Kugel R = 50 mm, Voxel = 1 mm, Dichte = 1000 kg/m3
+Soll (2/5 m R^2):                5.235988E+02 kg mm2
+Measure.matGetMomentOfInertia:   Ixx 8.215459E+02  Iyy 8.215328E+02  Izz 8.216313E+02   Abw. +56.90 % / +56.90 % / +56.92 %
+Rasterpunkte innen (fSD<=0): 523165, davon mit gespeichertem Wert (bGetValue==true): 88824  (17.0 %)
+Raster ohne Rueckgabewert-Filter: Ixx 5.228830E+02  Iyy 5.228829E+02  Izz 5.228604E+02   Abw. -0.14 % / -0.14 % / -0.14 %
+Volumen PicoGK: 5.234339E+05 mm3, Soll 5.235988E+05 mm3, Abw. -0.03 %
+RC=0
+===== innen2 voxel 5 =====
+# Befund 2, Ursachenprobe: Kugel R = 50 mm, Voxel = 5 mm
+x[mm]   erwartet   PicoGK.bIsInside   MarshalAs(I1)   roher EAX (hex)   | bGetValue roher EAX (hex)
+0.0   innen      True               True            0xC4000E01         | 0x00000000
+25.0   innen      True               True            0xC4000E01         | 0x00000000
+45.0   innen      True               True            0xC4000E01         | 0x00000001
+49.5   innen      True               False           0xC4000E00         | 0x00000001   <-- auch I1 falsch
+50.5   aussen     True               False           0xC4000E00         | 0x00000001
+55.0   aussen     True               False           0xC4000E00         | 0x00000001
+75.0   aussen     True               False           0xC4000E00         | 0x00000000
+100.0   aussen     True               False           0xC4000E00         | 0x00000000
+200.0   aussen     True               False           0xC4000E00         | 0x00000000
+RC=0
+===== innen2 voxel 1 =====
+# Befund 2, Ursachenprobe: Kugel R = 50 mm, Voxel = 1 mm
+x[mm]   erwartet   PicoGK.bIsInside   MarshalAs(I1)   roher EAX (hex)   | bGetValue roher EAX (hex)
+0.0   innen      True               True            0x9C000E01         | 0x00000000
+25.0   innen      True               True            0x9C000E01         | 0x00000000
+45.0   innen      True               True            0x9C000E01         | 0x00000000
+49.5   innen      True               False           0x9C000E00         | 0x00000001   <-- auch I1 falsch
+50.5   aussen     True               False           0x9C000E00         | 0x00000001
+55.0   aussen     True               False           0x9C000E00         | 0x00000000
+75.0   aussen     True               False           0x9C000E00         | 0x00000000
+100.0   aussen     True               False           0x9C000E00         | 0x00000000
+200.0   aussen     True               False           0x9C000E00         | 0x00000000
+RC=0

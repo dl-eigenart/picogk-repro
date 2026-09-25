@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Minimal-Reproduktionen fuer drei Befunde an PicoGK 2.3.0 / LEAP71_ShapeKernel.
+       Erwartete Ablage: /home/eigenart/leap71/PicoGKRepro/ neben PicoGK und LEAP71_ShapeKernel. -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>PicoGKRepro</RootNamespace>
+    <InvariantGlobalization>true</InvariantGlobalization>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../PicoGK/PicoGK.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="../LEAP71_ShapeKernel/**/*.cs"
+             Exclude="../LEAP71_ShapeKernel/**/obj/**;../LEAP71_ShapeKernel/**/bin/**" />
+  </ItemGroup>
+</Project>
