@@ -12,15 +12,17 @@ namespace PicoGKRepro
     ///   dotnet run -- traegheit <voxel_mm>   Befund 1: Measure.matGetMomentOfInertia gegen 2/5 m R^2
     ///   dotnet run -- innen     <voxel_mm>   Befund 2: Voxels.bIsInside und ScalarField.bGetValue an einer Kugel
     ///   dotnet run -- volumen   <voxel_mm>   Befund 3: Measure.fGetVolume an einer geschlossenen Hohlkugel
+    ///   dotnet run -- regress   <voxel_mm>   Regressionstest bIsInside nach herbstritt (PR 115), Exitcode 0 = bestanden
     /// Alle Zahlen gegen geschlossene Formeln. Keine Abhaengigkeit ausser PicoGK und ShapeKernel.
     /// </summary>
     public static class App
     {
         static readonly CultureInfo CI = CultureInfo.InvariantCulture;
+        static int nExit = 0;
 
         public static int Main(string[] a)
         {
-            if (a.Length < 2) { Console.WriteLine("Aufruf: traegheit|innen|volumen <voxel_mm>"); return 1; }
+            if (a.Length < 2) { Console.WriteLine("Aufruf: traegheit|innen|innen2|volumen|regress <voxel_mm>"); return 1; }
             float fVoxel = float.Parse(a[1], CI);
             Action fn = a[0] switch
             {
@@ -28,12 +30,13 @@ namespace PicoGKRepro
                 "innen"     => () => Innen(fVoxel),
                 "innen2"    => () => Innen2(fVoxel),
                 "volumen"   => () => Volumen(fVoxel),
+                "regress"   => () => Regress(),
                 _ => throw new ArgumentException(a[0])
             };
             Library.Go(fVoxel, () => { try { fn(); } catch (Exception e) { Console.WriteLine("FEHLER: " + e); } },
                        strLogFilePath: $"/tmp/picogk_repro_{a[0]}_{a[1]}.log",
                        bEndAppWithTask: true);
-            return 0;
+            return nExit;
         }
 
         static string F(double d) => d.ToString("0.000000E+00", CI);
@@ -168,6 +171,36 @@ namespace PicoGKRepro
                 string sMark = (bI1 == (x < fR)) ? "" : "   <-- auch I1 falsch";
                 Console.WriteLine($"{x,6:0.0}   {(x < fR ? "innen" : "aussen"),-8}   {bAlt,-16}   {bI1,-13}   0x{nRoh:X8}         | 0x{nRohGV:X8}{sMark}");
             }
+        }
+
+        // ------------------------------------------------------------------
+        // Regressionstest bIsInside, nach dem Test von @herbstritt in
+        // https://github.com/leap71/PicoGK/pull/115#issuecomment-6641886357
+        // Kugel r = 10 mm im Ursprung, nur PicoGK, kein ShapeKernel.
+        // Ohne den Fix ist der Punkt ausserhalb true. Exitcode 1 bei Fehler.
+        // ------------------------------------------------------------------
+        static void Regress()
+        {
+            Lattice lat = new();
+            lat.AddSphere(Vector3.Zero, 10f);
+            Voxels vox = new(lat);
+            (Vector3 p, bool bErw)[] aProbe =
+            {
+                (Vector3.Zero,             true),
+                (new Vector3(20, 0, 0),    false),
+                (new Vector3(5, 0, 0),     true),
+                (new Vector3(0, 15, 0),    false),
+                (new Vector3(0, 0, -12),   false),
+            };
+            int nFalsch = 0;
+            foreach (var (p, bErw) in aProbe)
+            {
+                bool bIst = vox.bIsInside(p);
+                if (bIst != bErw) nFalsch++;
+                Console.WriteLine($"bIsInside({p.X}, {p.Y}, {p.Z}) = {bIst,-5}  erwartet {bErw,-5}{(bIst == bErw ? "" : "   <-- FALSCH")}");
+            }
+            Console.WriteLine(nFalsch == 0 ? "PASS" : $"FAIL ({nFalsch} von {aProbe.Length} falsch)");
+            nExit = nFalsch == 0 ? 0 : 1;
         }
 
         // ------------------------------------------------------------------

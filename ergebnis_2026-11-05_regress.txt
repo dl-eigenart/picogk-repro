@@ -1,0 +1,41 @@
+# regress 0.25, 2026-11-05
+
+## Linux x86-64 (Ubuntu 26.04.1, .NET 9.0.320, runtime built from PicoGKRuntime 0f26321, xvfb-run)
+
+### PicoGK main 0e6cf6b
+bIsInside(0, 0, 0) = True   erwartet True 
+bIsInside(20, 0, 0) = True   erwartet False   <-- FALSCH
+bIsInside(5, 0, 0) = True   erwartet True 
+bIsInside(0, 15, 0) = True   erwartet False   <-- FALSCH
+bIsInside(0, 0, -12) = True   erwartet False   <-- FALSCH
+FAIL (3 von 5 falsch)
+exit code 1
+
+### PicoGK PR 115 head e2bbbb6
+bIsInside(0, 0, 0) = True   erwartet True 
+bIsInside(20, 0, 0) = False  erwartet False
+bIsInside(5, 0, 0) = True   erwartet True 
+bIsInside(0, 15, 0) = False  erwartet False
+bIsInside(0, 0, -12) = False  erwartet False
+PASS
+exit code 0
+
+## macOS arm64 (.NET 9.0.115, runtime from PicoGK/native/osx-arm64)
+
+### PicoGK main 0e6cf6b
+bIsInside(0, 0, 0) = True   erwartet True 
+bIsInside(20, 0, 0) = False  erwartet False
+bIsInside(5, 0, 0) = True   erwartet True 
+bIsInside(0, 15, 0) = False  erwartet False
+bIsInside(0, 0, -12) = False  erwartet False
+PASS
+exit code 0
+
+### PicoGK PR 115 head e2bbbb6
+bIsInside(0, 0, 0) = True   erwartet True 
+bIsInside(20, 0, 0) = False  erwartet False
+bIsInside(5, 0, 0) = True   erwartet True 
+bIsInside(0, 15, 0) = False  erwartet False
+bIsInside(0, 0, -12) = False  erwartet False
+PASS
+exit code 0

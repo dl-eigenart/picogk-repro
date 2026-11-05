@@ -8,9 +8,11 @@
     <Nullable>enable</Nullable>
     <RootNamespace>PicoGKRepro</RootNamespace>
     <InvariantGlobalization>true</InvariantGlobalization>
+    <!-- Ueberschreibbar, z. B. dotnet build -p:PicoGKDir=../PicoGK_pr115 -->
+    <PicoGKDir Condition="'$(PicoGKDir)' == ''">../PicoGK</PicoGKDir>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="../PicoGK/PicoGK.csproj" />
+    <ProjectReference Include="$(PicoGKDir)/PicoGK.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="../LEAP71_ShapeKernel/**/*.cs"
